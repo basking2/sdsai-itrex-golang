@@ -1,6 +1,6 @@
 package itrex
 
-type EmptyIterator struct {}
+type EmptyIterator struct{}
 
 func (e EmptyIterator) HasNext() bool {
 	return false

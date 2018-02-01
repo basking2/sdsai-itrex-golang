@@ -1,10 +1,10 @@
 package itrex
 
 type Context struct {
-	parent *Context
-	functionRegistry map[string]func(*Iterator, *Context)interface{}
-	environment map[string]interface{}
-	arguments Iterator
+	parent           *Context
+	functionRegistry map[string]FunctionInterface
+	environment      map[string]interface{}
+	arguments        Iterator
 }
 
 func NewContext() *Context {
@@ -14,7 +14,7 @@ func NewContext() *Context {
 func ChildContext(parent *Context) *Context {
 	c := Context{
 		parent,
-		make(map[string]func(*Iterator, *Context)interface{}),
+		make(map[string]FunctionInterface),
 		make(map[string]interface{}),
 		EmptyIterator{},
 	}
@@ -67,11 +67,11 @@ func (c *Context) ContainsKey(name string) bool {
 	return false
 }
 
-func (c *Context) Register(name string, f func(*Iterator, *Context)interface{}) {
+func (c *Context) Register(name string, f FunctionInterface) {
 	c.functionRegistry[name] = f
 }
 
-func (c *Context) GetFunction(name string) func(*Iterator, *Context)interface{} {
+func (c *Context) GetFunction(name string) FunctionInterface {
 	for ths := c; ths != nil; ths = ths.parent {
 		if val, ok := ths.functionRegistry[name]; ok {
 			return val
