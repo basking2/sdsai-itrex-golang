@@ -1,6 +1,7 @@
 package itrex
 
 import (
+	"container/list"
 	"github.com/basking2/sdsai-itrex-golang/sdsai/iterator"
 )
 
@@ -18,6 +19,10 @@ func (e *Evaluator) Evaluate(o interface{}, context *Context) interface{} {
 		return e.EvaluateEvaluatingIterator(o2)
 	case iterator.Iterator:
 		ei := EvaluatingIterator{o2, true, e, context}
+		return e.EvaluateEvaluatingIterator(&ei)
+	case *list.List:
+		ai := iterator.NewListIterator(o2)
+		ei := EvaluatingIterator{ai, true, e, context}
 		return e.EvaluateEvaluatingIterator(&ei)
 	case []interface{}:
 		ai := iterator.NewArrayIterator(o2)
