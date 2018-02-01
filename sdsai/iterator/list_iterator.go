@@ -6,7 +6,7 @@ import (
 
 type ListIterator struct {
 	// The list.
-	data  *list.List
+	data *list.List
 
 	// The current element in the list.
 	// Data from this element has already been returned to the user.

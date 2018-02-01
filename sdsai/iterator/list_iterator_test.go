@@ -1,14 +1,14 @@
 package iterator
 
 import (
+	"container/list"
 	"testing"
-  "container/list"
 )
 
 func TestSimpleListWalk(t *testing.T) {
 	var data = list.New()
-  data.PushBack("println")
-  data.PushBack(3)
+	data.PushBack("println")
+	data.PushBack(3)
 	ai := NewListIterator(data)
 	ai.HasNext()
 	if ai.Next().(string) != "println" {
