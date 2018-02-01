@@ -15,6 +15,10 @@ func (e *Evaluator) Evaluate(o interface{}, context *Context) interface{} {
   case Iterator:
     ei := EvaluatingIterator{o2, true, e, context}
     return e.EvaluateEvaluatingIterator(&ei)
+  case []interface{}:
+    ai := ArrayIterator{o2, 0}
+    ei := EvaluatingIterator{&ai, true, e, context}
+    return e.EvaluateEvaluatingIterator(&ei)
   default:
     return o
   }
