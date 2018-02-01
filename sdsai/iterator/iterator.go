@@ -1,4 +1,4 @@
-package itrex
+package iterator
 
 type Iterator interface {
 	HasNext() bool

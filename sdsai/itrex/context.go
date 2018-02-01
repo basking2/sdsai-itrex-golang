@@ -1,10 +1,14 @@
 package itrex
 
+import (
+	"github.com/basking2/sdsai-itrex-golang/sdsai/iterator"
+)
+
 type Context struct {
 	parent           *Context
 	functionRegistry map[string]FunctionInterface
 	environment      map[string]interface{}
-	arguments        Iterator
+	arguments        iterator.Iterator
 }
 
 func NewContext() *Context {
@@ -16,13 +20,13 @@ func ChildContext(parent *Context) *Context {
 		parent,
 		make(map[string]FunctionInterface),
 		make(map[string]interface{}),
-		EmptyIterator{},
+		iterator.EmptyIterator{},
 	}
 
 	return &c
 }
 
-func (parent *Context) FunctionCall(arguments Iterator) *Context {
+func (parent *Context) FunctionCall(arguments iterator.Iterator) *Context {
 	c := Context{
 		parent,
 		parent.functionRegistry,
@@ -81,10 +85,10 @@ func (c *Context) GetFunction(name string) FunctionInterface {
 	return nil
 }
 
-func (c *Context) SetArguments(args Iterator) {
+func (c *Context) SetArguments(args iterator.Iterator) {
 	c.arguments = args
 }
 
-func (c *Context) GetArguments() Iterator {
+func (c *Context) GetArguments() iterator.Iterator {
 	return c.arguments
 }

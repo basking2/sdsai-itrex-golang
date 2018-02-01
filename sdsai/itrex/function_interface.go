@@ -1,3 +1,7 @@
 package itrex
 
-type FunctionInterface func(Iterator, *Context) interface{}
+import (
+	"github.com/basking2/sdsai-itrex-golang/sdsai/iterator"
+)
+
+type FunctionInterface func(iterator.Iterator, *Context) interface{}

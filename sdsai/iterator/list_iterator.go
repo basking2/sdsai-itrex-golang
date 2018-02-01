@@ -1,4 +1,4 @@
-package itrex
+package iterator
 
 import (
 	"container/list"

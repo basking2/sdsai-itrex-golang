@@ -1,8 +1,12 @@
-package itrex
+package iterator
 
 type ArrayIterator struct {
 	data  []interface{}
 	index int
+}
+
+func NewArrayIterator(data []interface{}) *ArrayIterator {
+	return &ArrayIterator{data, 0}
 }
 
 func (a *ArrayIterator) HasNext() bool {

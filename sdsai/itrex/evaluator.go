@@ -1,5 +1,9 @@
 package itrex
 
+import (
+	"github.com/basking2/sdsai-itrex-golang/sdsai/iterator"
+)
+
 type Evaluator struct {
 	RootContext *Context
 }
@@ -12,12 +16,12 @@ func (e *Evaluator) Evaluate(o interface{}, context *Context) interface{} {
 	switch o2 := o.(type) {
 	case *EvaluatingIterator:
 		return e.EvaluateEvaluatingIterator(o2)
-	case Iterator:
+	case iterator.Iterator:
 		ei := EvaluatingIterator{o2, true, e, context}
 		return e.EvaluateEvaluatingIterator(&ei)
 	case []interface{}:
-		ai := ArrayIterator{o2, 0}
-		ei := EvaluatingIterator{&ai, true, e, context}
+		ai := iterator.NewArrayIterator(o2)
+		ei := EvaluatingIterator{ai, true, e, context}
 		return e.EvaluateEvaluatingIterator(&ei)
 	default:
 		return o
@@ -26,7 +30,7 @@ func (e *Evaluator) Evaluate(o interface{}, context *Context) interface{} {
 
 func (e *Evaluator) EvaluateEvaluatingIterator(ei *EvaluatingIterator) interface{} {
 	if ei.HasNext() {
-		return &EmptyIterator{}
+		return &iterator.EmptyIterator{}
 	}
 
 	operatorObject := ei.Next()

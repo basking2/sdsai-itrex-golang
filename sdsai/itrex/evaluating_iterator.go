@@ -1,7 +1,11 @@
 package itrex
 
+import (
+	"github.com/basking2/sdsai-itrex-golang/sdsai/iterator"
+)
+
 type EvaluatingIterator struct {
-	iterator          Iterator
+	iterator          iterator.Iterator
 	EvaluationEnabled bool
 	evaluator         *Evaluator
 	context           *Context
