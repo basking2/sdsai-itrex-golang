@@ -7,7 +7,7 @@ import (
 
 func TestParseAList(t *testing.T) {
 
-	switch ParseExpression("[]").(type) {
+	switch v,_ := ParseExpression("[]"); v.(type) {
 	case *list.List:
 	default:
 		t.Error("Expected list.")
@@ -16,7 +16,7 @@ func TestParseAList(t *testing.T) {
 
 func TestParseAList2(t *testing.T) {
 
-	switch ParseExpression("    []    ").(type) {
+	switch v,_ := ParseExpression("    []    "); v.(type) {
 	case *list.List:
 	default:
 		t.Error("Expected list.")
@@ -25,7 +25,7 @@ func TestParseAList2(t *testing.T) {
 
 func TestParseAListWithData(t *testing.T) {
 
-	switch l := ParseExpression("[string1 \"string two\" 1l 2d 3]").(type) {
+	switch v,_ := ParseExpression("[string1 \"string two\" 1l 2d 3]"); l := v.(type) {
 	case *list.List:
 		f := l.Front()
 		if f.Value.(string) != "string1" {
@@ -57,7 +57,7 @@ func TestParseAListWithData(t *testing.T) {
 }
 
 func TestQuotes(t *testing.T) {
-	switch l := ParseExpression("[\"He said, \\\\\\\"Hello.\\\"\"]").(type) {
+	switch v, _ := ParseExpression("[\"He said, \\\\\\\"Hello.\\\"\"]"); l := v.(type) {
 	case *list.List:
 		f := l.Front()
 		if f.Value.(string) != "He said, \\\"Hello.\"" {

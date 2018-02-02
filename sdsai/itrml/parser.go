@@ -2,6 +2,7 @@ package itrml
 
 import (
 	"container/list"
+	"errors"
 	"regexp"
 	"strconv"
 	"strings"
@@ -63,7 +64,7 @@ func (p *Parser) skip_comma() {
 	}
 }
 
-func (p *Parser) parse() interface{} {
+func (p *Parser) parse() (interface{}, error) {
 	p.skip_ws()
 
 	for i := block_comment(p.Expression, p.Position); i != nil; i = block_comment(p.Expression, p.Position) {
@@ -78,23 +79,27 @@ func (p *Parser) parse() interface{} {
 	}
 
 	if p.Position >= len(p.Expression) {
-		return nil
+		return nil, nil
 	}
 
 	return p.parse_literal()
 }
 
-func (p *Parser) parse_list() interface{} {
+func (p *Parser) parse_list() (interface{}, error) {
 	l := list.New()
 
 	var i []int = nil
 
 	// While there's no close bracket.
 	for i := close_bracket(p.Expression, p.Position); i == nil; i = close_bracket(p.Expression, p.Position) {
-		l.PushBack(p.parse())
+		if v, err := p.parse(); err == nil {
+			l.PushBack(v)
+		} else {
+			return nil, err
+		}
 		p.skip_comma()
 		if p.Position >= len(p.Expression) {
-			panic("Unclosed expression.")
+			return nil, errors.New("Unclosed expression.")
 		}
 	}
 
@@ -102,10 +107,10 @@ func (p *Parser) parse_list() interface{} {
 		p.Position += i[1] - i[0]
 	}
 
-	return l
+	return l, nil
 }
 
-func (p *Parser) parse_literal() interface{} {
+func (p *Parser) parse_literal() (interface{}, error) {
 	i := first_quote(p.Expression, p.Position)
 	expr := p.Expression[p.Position:]
 
@@ -114,9 +119,9 @@ func (p *Parser) parse_literal() interface{} {
 			p.Position += loc[1] - loc[0]
 			tok := expr[loc[2]:loc[3]]
 			tok = regexp.MustCompile("\\\\(.)").ReplaceAllString(tok, "$1")
-			return tok
+			return tok, nil
 		} else {
-			panic("Unmatched \" starting at position " + string(p.Position))
+			return nil, errors.New("Unmatched \" starting at position " + string(p.Position))
 		}
 	}
 
@@ -128,9 +133,9 @@ func (p *Parser) parse_literal() interface{} {
 		}
 
 		if f, err := strconv.ParseFloat(tok, 64); err == nil {
-			return f
+			return f, nil
 		} else {
-			panic(err)
+			return nil, err
 		}
 	}
 
@@ -142,9 +147,9 @@ func (p *Parser) parse_literal() interface{} {
 		}
 
 		if l, err := strconv.ParseInt(tok, 10, 64); err == nil {
-			return l
+			return l, nil
 		} else {
-			panic(err)
+			return nil, err
 		}
 	}
 
@@ -152,22 +157,22 @@ func (p *Parser) parse_literal() interface{} {
 		tok := expr[loc[0]:loc[1]]
 		p.Position += loc[1] - loc[0]
 		if n, err := strconv.ParseInt(tok, 10, 64); err == nil {
-			return n
+			return n, nil
 		} else {
-			panic(err)
+			return nil, err
 		}
 	}
 
 	if loc := word_re.FindStringIndex(expr); loc != nil {
 		tok := expr[loc[0]:loc[1]]
 		p.Position += loc[1] - loc[0]
-		return tok
+		return tok, nil
 	}
 
-	panic("Unexpected token at position " + string(p.Position))
+	return nil, errors.New("Unexpected token at position " + string(p.Position))
 }
 
-func ParseExpression(e string) interface{} {
+func ParseExpression(e string) (interface{}, error) {
 	p := Parser{e, 0}
 	return p.parse()
 }
