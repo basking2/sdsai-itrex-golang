@@ -2,19 +2,22 @@ package itrex
 
 import (
   "testing"
+  "bytes"
   "github.com/basking2/sdsai-itrex-golang/pkg/sdsai/itrml"
 )
 
 func TestPrintFunction(t *testing.T) {
   e := NewEvaluator()
+  buffer := bytes.Buffer{}
+  e.Register("print", &PrintFunction{&buffer})
 
-  println("----------------------")
   expr, err := itrml.ParseExpression("[print hi how are you]")
   if err != nil {
     panic(err.Error())
   }
   e.Evaluate(expr, e.RootContext)
-  println("----------------------")
+  if buffer.String() != "hihowareyou" {
+    t.Error("Expected \"hihowareyou\" but got " + buffer.String())
+  }
 
-  panic("This is not correct.")
 }

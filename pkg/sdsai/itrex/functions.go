@@ -1,13 +1,14 @@
 package itrex
 
 import (
-  "os"
   "fmt"
   "github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 )
 
 type PrintFunction struct {
-  Out *os.File
+  Out interface {
+    WriteString(string) (int, error)
+  }
 }
 
 func (f *PrintFunction) Apply(i iterator.Iterator, c *Context) interface{} {

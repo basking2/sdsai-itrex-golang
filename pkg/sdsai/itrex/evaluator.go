@@ -44,7 +44,7 @@ func (e *Evaluator) Evaluate(o interface{}, context *Context) interface{} {
 }
 
 func (e *Evaluator) EvaluateEvaluatingIterator(ei *EvaluatingIterator) interface{} {
-	if ei.HasNext() {
+	if ! ei.HasNext() {
 		return &iterator.EmptyIterator{}
 	}
 
