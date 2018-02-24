@@ -2,7 +2,7 @@ package itrex
 
 import (
 	"container/list"
-	"github.com/basking2/sdsai-itrex-golang/sdsai/iterator"
+	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 )
 
 type Evaluator struct {
