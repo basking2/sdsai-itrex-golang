@@ -1,12 +1,22 @@
 package itrex
 
 import (
+	"os"
 	"container/list"
 	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 )
 
 type Evaluator struct {
 	RootContext *Context
+}
+
+func NewEvaluator() *Evaluator {
+	e := Evaluator{NewContext()}
+
+	e.Register("print", &PrintFunction{os.Stdout})
+	e.Register("printErr", &PrintFunction{os.Stderr})
+
+	return &e
 }
 
 func (e *Evaluator) Register(name string, f FunctionInterface) {
@@ -50,5 +60,5 @@ func (e *Evaluator) EvaluateEvaluatingIterator(ei *EvaluatingIterator) interface
 		panic("Cannot handle type.")
 	}
 
-	return operator(ei, ei.context)
+	return operator.Apply(ei, ei.context)
 }
