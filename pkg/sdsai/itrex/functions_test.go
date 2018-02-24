@@ -16,7 +16,7 @@ func TestPrintFunction(t *testing.T) {
     panic(err.Error())
   }
   e.Evaluate(expr, e.RootContext)
-  if buffer.String() != "hihowareyou" {
+  if buffer.String() != "hi:string\nhow:string\nare:string\nyou:string\n" {
     t.Error("Expected \"hihowareyou\" but got " + buffer.String())
   }
 
