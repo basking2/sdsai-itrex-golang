@@ -102,6 +102,5 @@ func (f *TraceFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 
   // Redefine i and c for a function call.
   i = iterator.NewListIterator(l)
-  c = c.FunctionCall(i)
   return itrexFunction.Apply(i, c)
 }
