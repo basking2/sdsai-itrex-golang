@@ -21,3 +21,19 @@ func TestPrintFunction(t *testing.T) {
   }
 
 }
+
+func TestTraceFunction(t *testing.T) {
+  e := NewEvaluator()
+  buffer := bytes.Buffer{}
+  e.Register("trace", &TraceFunction{&buffer})
+
+  expr, err := itrml.ParseExpression("[trace print hi how are you]")
+  if err != nil {
+    panic(err.Error())
+  }
+  e.Evaluate(expr, e.RootContext)
+  if buffer.String() != "[ print hi how are you ]" {
+    t.Error("Expected \"hihowareyou\" but got " + buffer.String())
+  }
+
+}
