@@ -26,6 +26,17 @@ func ChildContext(parent *Context) *Context {
 	return &c
 }
 
+func (parent *Context) LetContext() *Context {
+	c := Context{
+		parent,
+		parent.functionRegistry,
+		parent.environment,
+		parent.arguments,
+	}
+
+	return &c
+}
+
 func (parent *Context) FunctionCall(arguments iterator.Iterator) *Context {
 	c := Context{
 		parent,

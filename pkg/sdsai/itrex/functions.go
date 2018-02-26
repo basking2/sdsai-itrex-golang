@@ -176,19 +176,19 @@ func (LastFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 }
 
 type LetFunction struct{
-  evaluator *Evaluator
 }
 
 func (f LetFunction) Apply(i iterator.Iterator, c *Context) interface{} {
-  childContext := ChildContext(c)
-  f.evaluator.RootContext = childContext
-  defer func() {
-    f.evaluator.RootContext = f.evaluator.RootContext.parent
-  }()
 
-  var v interface{} = nil
-  for i.HasNext() {
-    v = i.Next()
+  switch evaluatingContext := i.(type) {
+  case *EvaluatingIterator:
+    newContext := c.LetContext()
+    var v interface{} = nil
+    for evaluatingContext.HasNext() {
+      v = evaluatingContext.NextCtx(newContext)
+    }
+    return v
+  default:
+    return errors.New("Can only use let with an EvaluatingIterator as input.")
   }
-  return v
 }
