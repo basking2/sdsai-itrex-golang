@@ -35,5 +35,26 @@ func TestTraceFunction(t *testing.T) {
   if buffer.String() != "[ print hi how are you ]" {
     t.Error("Expected \"hihowareyou\" but got " + buffer.String())
   }
+}
 
+func TestIfFunction(t *testing.T) {
+  e := NewEvaluator()
+
+  expr, err := itrml.ParseExpression("[if true 3 4]")
+  if err != nil {
+    panic(err.Error())
+  }
+  r := e.Evaluate(expr, e.RootContext)
+  if r.(int64) != 3 {
+    t.Errorf("%d != 3", r.(int64))
+  }
+  
+  expr, err = itrml.ParseExpression("[if false 3 4]")
+  if err != nil {
+    panic(err.Error())
+  }
+  r = e.Evaluate(expr, e.RootContext)
+  if r.(int64) != 4 {
+    t.Errorf("%d != 4", r.(int64))
+  }
 }

@@ -121,3 +121,74 @@ func (IfFunction) Apply(i iterator.Iterator, c *Context) interface{} {
     return i.Next()
   }
 }
+
+type SetFunction struct{}
+func (SetFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+  if i.HasNext() {
+    name := ToString(i.Next())
+    if i.HasNext() {
+      v := i.Next()
+      c.Set(name, v)
+      return v
+    } else {
+      c.Set(name, nil)
+      return nil
+    }
+  } else {
+    return nil
+  }
+}
+
+type UpdateFunction struct{}
+func (UpdateFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+  if i.HasNext() {
+    name := ToString(i.Next())
+    if i.HasNext() {
+      v := i.Next()
+      c.Update(name, v)
+      return v
+    } else {
+      c.Update(name, nil)
+      return nil
+    }
+  } else {
+    return nil
+  }
+}
+
+type GetFunction struct{}
+func (GetFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+  if i.HasNext() {
+    name := ToString(i.Next())
+    return c.Get(name)
+  } else {
+    return nil
+  }
+}
+
+type LastFunction struct{}
+func (LastFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+  var v interface{} = nil
+  for i.HasNext() {
+    v = i.Next()
+  }
+  return v
+}
+
+type LetFunction struct{
+  evaluator *Evaluator
+}
+
+func (f LetFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+  childContext := ChildContext(c)
+  f.evaluator.RootContext = childContext
+  defer func() {
+    f.evaluator.RootContext = f.evaluator.RootContext.parent
+  }()
+
+  var v interface{} = nil
+  for i.HasNext() {
+    v = i.Next()
+  }
+  return v
+}
