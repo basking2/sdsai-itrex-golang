@@ -175,9 +175,7 @@ func (LastFunction) Apply(i iterator.Iterator, c *Context) interface{} {
   return v
 }
 
-type LetFunction struct{
-}
-
+type LetFunction struct{}
 func (f LetFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 
   switch evaluatingContext := i.(type) {
