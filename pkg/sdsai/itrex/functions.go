@@ -2,6 +2,7 @@ package itrex
 
 import (
   "fmt"
+  "errors"
   "container/list"
   "github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 )
@@ -74,28 +75,7 @@ func (f *TraceFunction) Apply(i iterator.Iterator, c *Context) interface{} {
   for i.HasNext() {
     v := i.Next()
     l.PushBack(v)
-    switch v := v.(type) {
-    case string:
-      f.Out.WriteString(" "+string(v))
-    case int32:
-      f.Out.WriteString(" "+string(v))
-    case int64:
-      f.Out.WriteString(" "+string(v))
-    case uint64:
-      f.Out.WriteString(" "+string(v))
-    case float32:
-      f.Out.WriteString(fmt.Sprintf(" %f", v))
-    case float64:
-      f.Out.WriteString(fmt.Sprintf( "%f", v))
-    case bool:
-      if v {
-        f.Out.WriteString(" true")
-      } else {
-        f.Out.WriteString(" false")
-      }
-    default:
-      f.Out.WriteString(fmt.Sprintf(" %x", v))
-    }
+    f.Out.WriteString(" " + ToString(v))
   }
 
   f.Out.WriteString(" ]")
@@ -103,4 +83,41 @@ func (f *TraceFunction) Apply(i iterator.Iterator, c *Context) interface{} {
   // Redefine i and c for a function call.
   i = iterator.NewListIterator(l)
   return itrexFunction.Apply(i, c)
+}
+
+type IfFunction struct{}
+func (IfFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+
+  if !i.HasNext() {
+    return errors.New("No predicate.")
+  }
+
+  var boolVal = ToBool(i.Next())
+
+  if boolVal {
+    if i.HasNext() {
+      return i.Next()
+    } else {
+      return errors.New("No then clause in if.")
+    }
+  } else {
+    if !i.HasNext() {
+      return errors.New("No then or elses clause in if.")
+    }
+
+    switch v := i.(type) {
+    case *EvaluatingIterator:
+      v.EvaluationEnabled = false
+      v.Next()
+      v.EvaluationEnabled = true
+    default:
+      v.Next()
+    }
+
+    if !i.HasNext() {
+      return errors.New("No else clause in if.")
+    }
+
+    return i.Next()
+  }
 }

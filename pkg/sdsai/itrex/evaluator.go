@@ -17,6 +17,7 @@ func NewEvaluator() *Evaluator {
 	e.Register("printErr", &PrintFunction{os.Stderr})
 	e.Register("trace", &TraceFunction{os.Stdout})
 	e.Register("traceErr", &TraceFunction{os.Stderr})
+	e.Register("if", IfFunction{})
 
 	return &e
 }
