@@ -1,0 +1,13 @@
+ItrEx Go API
+============
+
++print+:: Function.
++printErr+:: Function.
++trace+:: Function.
++traceErr+:: Function.
++if+:: Function.
++set+:: Function.
++update+:: Function.
++get+:: Function.
++let+:: Function.
++last+:: Function.

@@ -1,0 +1,8 @@
+ItrEx Go
+========
+
+:included: true
+:leveloffset: 1
+include::itrex_go_api.adoc[]
+:leveloffset: 0
+:included!:
