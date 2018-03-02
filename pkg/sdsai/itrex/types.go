@@ -3,6 +3,8 @@ package itrex
 import (
 	"fmt"
 	"strings"
+	"container/list"
+	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 )
 
 func ToBool(v interface{}) bool {
@@ -69,5 +71,18 @@ func ToString(v interface{}) string {
 		return fmt.Sprintf("%f", s)
 	default:
 		return fmt.Sprintf("%x", s)
+	}
+}
+
+func ToIterator(v interface{}) iterator.Iterator {
+	switch v2 := v.(type) {
+	case iterator.Iterator:
+		return v2
+	case *list.List:
+		return iterator.NewListIterator(v2)
+	case []interface{}:
+		return iterator.NewArrayIterator(v2)
+	default:
+		return nil
 	}
 }

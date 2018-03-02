@@ -196,3 +196,41 @@ func (f LetFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 		return errors.New("Can only use let with an EvaluatingIterator as input.")
 	}
 }
+
+type MapFunction struct{}
+
+func (f MapFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	if ! i.HasNext() {
+		return nil
+	}
+
+	var fi FunctionInterface
+
+	switch funcInterface := i.Next().(type) {
+	case FunctionInterface:
+		fi = funcInterface
+	case string:
+		fi = c.GetFunction(funcInterface)
+	default:
+		return errors.New("First argument is not a function.")
+	}
+
+	if i.HasNext() {
+		v := ToIterator(i.Next())
+		if v == nil {
+			return errors.New("Second argument is not iterable.")
+		} else {
+			return iterator.NewMappingIterator(
+				v,
+				func(i interface{}) interface{} {
+					v := make([]interface{}, 1)
+					v[0] = i
+					return fi.Apply(iterator.NewArrayIterator(v), c)
+				})
+		}
+	} else {
+		return errors.New("There is no second iterable argument.")
+	}
+
+	return errors.New("Map Function: Second argument. No an iterator.")
+}
