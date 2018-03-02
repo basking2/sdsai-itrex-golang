@@ -11,3 +11,4 @@ ItrEx Go API
 +get+:: Function.
 +let+:: Function.
 +last+:: Function.
++map+:: Function.
