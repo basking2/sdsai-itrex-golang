@@ -204,13 +204,19 @@ func (f MapFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 		return nil
 	}
 
-	var fi FunctionInterface
+	var fi FunctionInterface = nil
 
 	switch funcInterface := i.Next().(type) {
 	case FunctionInterface:
 		fi = funcInterface
+		if fi == nil {
+			return errors.New("Function to map was not found.")
+		}
 	case string:
 		fi = c.GetFunction(funcInterface)
+		if fi == nil {
+			return errors.New("Function to map was not found: " + funcInterface)
+		}
 	default:
 		return errors.New("First argument is not a function.")
 	}
