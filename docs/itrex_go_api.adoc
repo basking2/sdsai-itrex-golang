@@ -14,3 +14,4 @@ ItrEx Go API
 +map+:: Function.
 +function+:: Create a function.
 +fn+:: Fetch or define a function.
++curry+:: Curry a function.

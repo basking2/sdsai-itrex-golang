@@ -299,3 +299,28 @@ func (f FnFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 		return nil
 	}
 }
+
+type CurryFunction struct {}
+
+func (f CurryFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+
+		if functionName := ToString(i.Next()); functionName != "" {
+			functionBody := c.GetFunction(functionName)
+
+			boundArgs := list.New()
+			for i.HasNext() {
+				boundArgs.PushBack(i.Next())
+			}
+
+			return NewBoundFunction(
+				func(args iterator.Iterator, c *Context, cbdata interface{}) interface{} {
+					allArgs := iterator.NewConcatinatedIterator(
+						iterator.NewListIterator(boundArgs),
+						args)
+					return functionBody.Apply(allArgs, c)
+				},
+				nil)
+		} else {
+			return nil
+		}
+}
