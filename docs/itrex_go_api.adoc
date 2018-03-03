@@ -12,3 +12,4 @@ ItrEx Go API
 +let+:: Function.
 +last+:: Function.
 +map+:: Function.
++function+:: Create a function.

@@ -23,6 +23,7 @@ func NewEvaluator() *Evaluator {
 	e.Register("get", GetFunction{})
 	e.Register("let", LetFunction{})
 	e.Register("last", LastFunction{})
+	e.Register("function", FunctionFunction{&e})
 
 	return &e
 }

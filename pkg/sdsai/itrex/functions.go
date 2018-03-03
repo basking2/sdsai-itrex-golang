@@ -240,3 +240,26 @@ func (f MapFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 
 	return errors.New("Map Function: Second argument. No an iterator.")
 }
+
+type FunctionFunction struct{
+	evaluator *Evaluator
+}
+
+func (f FunctionFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	var functionBody interface{}
+
+	switch itr := i.(type) {
+	case *EvaluatingIterator:
+		itr.EvaluationEnabled = false
+		functionBody = itr.Next()
+		itr.EvaluationEnabled = true
+	default:
+		functionBody = itr.Next()
+	}
+
+	return NewBoundFunction(
+		func(args iterator.Iterator, c *Context, functionBody interface{}) interface{} {
+			return f.evaluator.Evaluate(functionBody, c.FunctionCall(args))
+		},
+		functionBody)
+}
