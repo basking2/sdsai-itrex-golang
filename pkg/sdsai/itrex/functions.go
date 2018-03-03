@@ -263,3 +263,39 @@ func (f FunctionFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 		},
 		functionBody)
 }
+
+type FnFunction struct {
+	evaluator *Evaluator
+}
+
+func (f FnFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+
+	if functionName := ToString(i.Next()); functionName != "" {
+		if ! i.HasNext() {
+			return c.GetFunction(functionName)
+		}
+
+		var functionBody interface{}
+
+		switch itr := i.(type) {
+		case *EvaluatingIterator:
+			itr.EvaluationEnabled = false
+			functionBody = itr.Next()
+			itr.EvaluationEnabled = true
+		default:
+			functionBody = itr.Next()
+		}
+
+		boundFunction := NewBoundFunction(
+			func(args iterator.Iterator, c *Context, functionBody interface{}) interface{} {
+				return f.evaluator.Evaluate(functionBody, c.FunctionCall(args))
+			},
+			functionBody)
+
+		c.Register(functionName, boundFunction)
+
+		return boundFunction
+	} else {
+		return nil
+	}
+}

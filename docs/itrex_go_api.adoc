@@ -13,3 +13,4 @@ ItrEx Go API
 +last+:: Function.
 +map+:: Function.
 +function+:: Create a function.
++fn+:: Fetch or define a function.

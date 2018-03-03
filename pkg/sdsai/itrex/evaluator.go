@@ -24,6 +24,7 @@ func NewEvaluator() *Evaluator {
 	e.Register("let", LetFunction{})
 	e.Register("last", LastFunction{})
 	e.Register("function", FunctionFunction{&e})
+	e.Register("fn", FnFunction{&e})
 
 	return &e
 }
