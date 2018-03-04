@@ -39,6 +39,155 @@ func ToBool(v interface{}) bool {
 	}
 }
 
+func ToInt(v interface{}) int32 {
+	switch b := v.(type) {
+	case bool:
+		if b {
+			return 1
+		} else {
+			return 0
+		}
+	case string:
+		var i int32
+		fmt.Sscanf(b, "%d", &i)
+		return i
+	case int8:
+		return int32(b)
+	case int16:
+		return int32(b)
+	case int32:
+		return int32(b)
+	case int64:
+		return int32(b)
+	case uint8:
+		return int32(b)
+	case uint16:
+		return int32(b)
+	case uint32:
+		return int32(b)
+	case uint64:
+		return int32(b)
+	case float32:
+		return int32(b)
+	case float64:
+		return int32(b)
+	default:
+		return 0
+	}
+}
+
+func ToLong(v interface{}) int64 {
+	switch b := v.(type) {
+	case bool:
+		if b {
+			return 1
+		} else {
+			return 0
+		}
+	case string:
+		var i int64
+		fmt.Sscanf(b, "%d", &i)
+		return i
+	case int8:
+		return int64(b)
+	case int16:
+		return int64(b)
+	case int32:
+		return int64(b)
+	case int64:
+		return int64(b)
+	case uint8:
+		return int64(b)
+	case uint16:
+		return int64(b)
+	case uint32:
+		return int64(b)
+	case uint64:
+		return int64(b)
+	case float32:
+		return int64(b)
+	case float64:
+		return int64(b)
+	default:
+		return 0
+	}
+
+}
+
+func ToFloat(v interface{}) float32 {
+	switch b := v.(type) {
+	case bool:
+		if b {
+			return 1
+		} else {
+			return 0
+		}
+	case string:
+		var i float32
+		fmt.Sscanf(b, "%f", &i)
+		return i
+	case int8:
+		return float32(b)
+	case int16:
+		return float32(b)
+	case int32:
+		return float32(b)
+	case int64:
+		return float32(b)
+	case uint8:
+		return float32(b)
+	case uint16:
+		return float32(b)
+	case uint32:
+		return float32(b)
+	case uint64:
+		return float32(b)
+	case float32:
+		return float32(b)
+	case float64:
+		return float32(b)
+	default:
+		return 0
+	}
+}
+
+func ToDouble(v interface{}) float64 {
+	switch b := v.(type) {
+	case bool:
+		if b {
+			return 1
+		} else {
+			return 0
+		}
+	case string:
+		var i float64
+		fmt.Sscanf(b, "%f", &i)
+		return i
+	case int8:
+		return float64(b)
+	case int16:
+		return float64(b)
+	case int32:
+		return float64(b)
+	case int64:
+		return float64(b)
+	case uint8:
+		return float64(b)
+	case uint16:
+		return float64(b)
+	case uint32:
+		return float64(b)
+	case uint64:
+		return float64(b)
+	case float32:
+		return float64(b)
+	case float64:
+		return float64(b)
+	default:
+		return 0
+	}
+}
+
 func ToString(v interface{}) string {
 	switch s := v.(type) {
 	case bool:
