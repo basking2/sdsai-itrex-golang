@@ -93,7 +93,7 @@ func (p *Parser) parse_list() (interface{}, error) {
 	var i []int = nil
 
 	// While there's no close bracket.
-	for i := close_bracket(p.Expression, p.Position); i == nil; i = close_bracket(p.Expression, p.Position) {
+	for i = close_bracket(p.Expression, p.Position); i == nil; i = close_bracket(p.Expression, p.Position) {
 		if v, err := p.parse(); err == nil {
 			l.PushBack(v)
 		} else {
