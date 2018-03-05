@@ -237,8 +237,6 @@ func (f MapFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 	} else {
 		return errors.New("There is no second iterable argument.")
 	}
-
-	return errors.New("Map Function: Second argument. No an iterator.")
 }
 
 type FunctionFunction struct {
