@@ -1,10 +1,10 @@
 package itrml
 
 import (
-  "github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
-  "container/list"
-  "errors"
-  "fmt"
+	"container/list"
+	"errors"
+	"fmt"
+	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 )
 
 type StringWriter interface {

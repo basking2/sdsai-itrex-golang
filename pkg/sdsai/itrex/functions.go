@@ -200,7 +200,7 @@ func (f LetFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 type MapFunction struct{}
 
 func (f MapFunction) Apply(i iterator.Iterator, c *Context) interface{} {
-	if ! i.HasNext() {
+	if !i.HasNext() {
 		return nil
 	}
 
@@ -241,7 +241,7 @@ func (f MapFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 	return errors.New("Map Function: Second argument. No an iterator.")
 }
 
-type FunctionFunction struct{
+type FunctionFunction struct {
 	evaluator *Evaluator
 }
 
@@ -271,7 +271,7 @@ type FnFunction struct {
 func (f FnFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 
 	if functionName := ToString(i.Next()); functionName != "" {
-		if ! i.HasNext() {
+		if !i.HasNext() {
 			return c.GetFunction(functionName)
 		}
 
@@ -300,33 +300,33 @@ func (f FnFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 	}
 }
 
-type CurryFunction struct {}
+type CurryFunction struct{}
 
 func (f CurryFunction) Apply(i iterator.Iterator, c *Context) interface{} {
-		var functionBody FunctionInterface
+	var functionBody FunctionInterface
 
-		switch arg1 := i.Next().(type) {
-		case FunctionInterface:
-			functionBody = arg1
-		default:
-			functionName := ToString(arg1)
-			if functionName == "" {
-				return nil
-			}
-			functionBody = c.GetFunction(functionName)
+	switch arg1 := i.Next().(type) {
+	case FunctionInterface:
+		functionBody = arg1
+	default:
+		functionName := ToString(arg1)
+		if functionName == "" {
+			return nil
 		}
+		functionBody = c.GetFunction(functionName)
+	}
 
-		boundArgs := list.New()
-		for i.HasNext() {
-			boundArgs.PushBack(i.Next())
-		}
+	boundArgs := list.New()
+	for i.HasNext() {
+		boundArgs.PushBack(i.Next())
+	}
 
-		return NewBoundFunction(
-			func(args iterator.Iterator, c *Context, cbdata interface{}) interface{} {
-				allArgs := iterator.NewConcatinatedIterator(
-					iterator.NewListIterator(boundArgs),
-					args)
-				return functionBody.Apply(allArgs, c)
-			},
-			nil)
+	return NewBoundFunction(
+		func(args iterator.Iterator, c *Context, cbdata interface{}) interface{} {
+			allArgs := iterator.NewConcatinatedIterator(
+				iterator.NewListIterator(boundArgs),
+				args)
+			return functionBody.Apply(allArgs, c)
+		},
+		nil)
 }

@@ -1,10 +1,10 @@
 package itrex
 
 import (
-	"fmt"
-	"strings"
 	"container/list"
+	"fmt"
 	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
+	"strings"
 )
 
 func ToBool(v interface{}) bool {

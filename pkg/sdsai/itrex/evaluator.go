@@ -28,26 +28,26 @@ func NewEvaluator() *Evaluator {
 	e.Register("curry", CurryFunction{})
 	e.Register("nop", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return nil
-		}, nil))
+	}, nil))
 
 	e.Register("boolean", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return ToBool(i.Next())
-		}, nil))
+	}, nil))
 	e.Register("string", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return ToString(i.Next())
-		}, nil))
+	}, nil))
 	e.Register("int", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return ToInt(i.Next())
-		}, nil))
+	}, nil))
 	e.Register("long", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return ToLong(i.Next())
-		}, nil))
+	}, nil))
 	e.Register("float", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return ToFloat(i.Next())
-		}, nil))
+	}, nil))
 	e.Register("double", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return ToDouble(i.Next())
-		}, nil))
+	}, nil))
 
 	return &e
 }
