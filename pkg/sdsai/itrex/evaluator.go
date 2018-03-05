@@ -26,6 +26,9 @@ func NewEvaluator() *Evaluator {
 	e.Register("function", FunctionFunction{&e})
 	e.Register("fn", FnFunction{&e})
 	e.Register("curry", CurryFunction{})
+	e.Register("nop", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
+		return nil
+		}, nil))
 
 	e.Register("boolean", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return ToBool(i.Next())
