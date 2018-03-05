@@ -2,8 +2,8 @@ package itrex
 
 import (
 	"bytes"
-	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/itrml"
+	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
 	"testing"
 )
 
@@ -62,13 +62,13 @@ func TestIfFunction(t *testing.T) {
 
 func TestCurryFunction(t *testing.T) {
 	e := NewEvaluator()
-	e.Register("sum", NewBoundFunction(func(i iterator.Iterator, ctx *Context, cbdata interface{}) interface{} {
+	e.Register("sum", NewBoundFunction(func (i iterator.Iterator, ctx *Context, cbdata interface{}) interface{} {
 		s := int32(0)
 		for i.HasNext() {
 			s += i.Next().(int32)
 		}
 		return s
-	}, nil))
+		}, nil))
 
 	expr, err := itrml.ParseExpression(`[last
 		[set f [curry sum [int 3] ] ]
@@ -88,4 +88,3 @@ func TestCurryFunction(t *testing.T) {
 // +map+:: Function.
 // +function+:: Create a function.
 // +fn+:: Fetch or define a function.
-// +curry+:: Curry a function.
