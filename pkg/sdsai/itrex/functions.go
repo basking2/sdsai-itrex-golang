@@ -303,24 +303,30 @@ func (f FnFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 type CurryFunction struct {}
 
 func (f CurryFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+		var functionBody FunctionInterface
 
-		if functionName := ToString(i.Next()); functionName != "" {
-			functionBody := c.GetFunction(functionName)
-
-			boundArgs := list.New()
-			for i.HasNext() {
-				boundArgs.PushBack(i.Next())
+		switch arg1 := i.Next().(type) {
+		case FunctionInterface:
+			functionBody = arg1
+		default:
+			functionName := ToString(arg1)
+			if functionName == "" {
+				return nil
 			}
-
-			return NewBoundFunction(
-				func(args iterator.Iterator, c *Context, cbdata interface{}) interface{} {
-					allArgs := iterator.NewConcatinatedIterator(
-						iterator.NewListIterator(boundArgs),
-						args)
-					return functionBody.Apply(allArgs, c)
-				},
-				nil)
-		} else {
-			return nil
+			functionBody = c.GetFunction(functionName)
 		}
+
+		boundArgs := list.New()
+		for i.HasNext() {
+			boundArgs.PushBack(i.Next())
+		}
+
+		return NewBoundFunction(
+			func(args iterator.Iterator, c *Context, cbdata interface{}) interface{} {
+				allArgs := iterator.NewConcatinatedIterator(
+					iterator.NewListIterator(boundArgs),
+					args)
+				return functionBody.Apply(allArgs, c)
+			},
+			nil)
 }
