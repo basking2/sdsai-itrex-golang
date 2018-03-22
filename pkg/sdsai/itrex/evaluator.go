@@ -30,6 +30,7 @@ func NewEvaluator() *Evaluator {
 	e.Register("hasArg", HasArgFunction{})
 	e.Register("fn", FnFunction{&e})
 	e.Register("curry", CurryFunction{})
+	e.Register("evalItrml", EvalItrMlFunction{&e})
 	e.Register("nop", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {
 		return nil
 	}, nil))

@@ -4,7 +4,9 @@ import (
 	"container/list"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/iterator"
+	"github.com/basking2/sdsai-itrex-golang/pkg/sdsai/itrml"
 )
 
 type PrintFunction struct {
@@ -356,4 +358,25 @@ func (f ArgsFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 type HasArgFunction struct{}
 func (f HasArgFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 	return c.arguments.HasNext()
+}
+
+type EvalItrMlFunction struct{
+	evaluator *Evaluator
+}
+
+func (f EvalItrMlFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	file := i.Next().(string)
+
+	exprBytes, err := ioutil.ReadFile(file)
+	if err != nil {
+		return err
+	}
+
+	expr, err := itrml.ParseExpression(string(exprBytes))
+	if err != nil {
+		return err
+	}
+
+	return f.evaluator.Evaluate(expr, c)
+
 }
