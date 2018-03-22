@@ -24,6 +24,10 @@ func NewEvaluator() *Evaluator {
 	e.Register("let", LetFunction{})
 	e.Register("last", LastFunction{})
 	e.Register("function", FunctionFunction{&e})
+	e.Register("register", RegisterFunction{})
+	e.Register("args", ArgsFunction{})
+	e.Register("arg", ArgFunction{})
+	e.Register("hasArg", HasArgFunction{})
 	e.Register("fn", FnFunction{&e})
 	e.Register("curry", CurryFunction{})
 	e.Register("nop", NewBoundFunction(func(i iterator.Iterator, c *Context, cbdata interface{}) interface{} {

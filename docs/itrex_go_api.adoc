@@ -15,10 +15,9 @@ ItrEx Go API
 +function+:: Create a function.
 +fn+:: Fetch or define a function.
 +curry+:: Curry a function.
-
 +int+:: Function.
 +float+:: Function.
 +double+:: Function.
 +long+:: Function.
-+string+:: Function.
 +boolean+:: Function.
++string+:: Function.

@@ -328,3 +328,32 @@ func (f CurryFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 		},
 		nil)
 }
+
+type RegisterFunction struct{}
+func (f RegisterFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	switch v := i.Next().(type) {
+	case string:
+		f := i.Next().(FunctionInterface)
+		c.Register(v, f)
+		return f
+	default:
+		f := i.Next().(FunctionInterface)
+		c.Register(ToString(v), f)
+		return f
+	}
+}
+
+type ArgFunction struct{}
+func (f ArgFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	return c.arguments.Next()
+}
+
+type ArgsFunction struct{}
+func (f ArgsFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	return c.arguments
+}
+
+type HasArgFunction struct{}
+func (f HasArgFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	return c.arguments.HasNext()
+}
