@@ -25,9 +25,12 @@ func NewEvaluator() *Evaluator {
 	e.Register("last", LastFunction{})
 	e.Register("function", FunctionFunction{&e})
 	e.Register("register", RegisterFunction{})
+
 	e.Register("args", ArgsFunction{})
 	e.Register("arg", ArgFunction{})
 	e.Register("hasArg", HasArgFunction{})
+	e.Register("nameArgs", NameArgsFunction{})
+
 	e.Register("fn", FnFunction{&e})
 	e.Register("curry", CurryFunction{})
 	e.Register("evalItrml", EvalItrMlFunction{&e})

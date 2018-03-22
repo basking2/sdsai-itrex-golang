@@ -380,3 +380,17 @@ func (f EvalItrMlFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 	return f.evaluator.Evaluate(expr, c)
 
 }
+
+type NameArgsFunction struct{}
+func (f NameArgsFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+
+	var argVal interface{} = nil
+
+	for i.HasNext() && c.arguments.HasNext() {
+		v := i.Next().(string)
+		argVal = c.arguments.Next()
+		c.Set(v, argVal)
+	}
+
+	return argVal
+}
