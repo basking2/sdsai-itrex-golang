@@ -111,4 +111,23 @@ func TestFnFunctionAndCurryFunction(t *testing.T) {
 	}
 }
 
+func TestCaseFunction(t *testing.T) {
+	e := NewEvaluator()
+
+	expr, err := itrml.ParseExpression(`[caseList
+		[case [boolean false] 1]
+		[case [boolean true]  2]
+		[case [boolean false] 3]
+		]
+		`)
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	v := e.Evaluate(expr, e.RootContext).(int64)
+	if v != 2 {
+		t.Errorf("Expected 2 but got %d.", v)
+	}
+}
+
 // +function+:: Create a function.

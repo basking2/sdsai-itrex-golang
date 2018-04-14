@@ -31,6 +31,10 @@ func NewEvaluator() *Evaluator {
 	e.Register("hasArg", HasArgFunction{})
 	e.Register("nameArgs", NameArgsFunction{})
 
+	e.Register("case", CaseFunction{})
+	e.Register("caseList", CaseListFunction{})
+	e.Register("defaultCase", DefaultCaseFunction{})
+
 	e.Register("fn", FnFunction{&e})
 	e.Register("curry", CurryFunction{})
 	e.Register("evalItrml", EvalItrMlFunction{&e})

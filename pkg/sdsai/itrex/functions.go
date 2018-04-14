@@ -394,3 +394,60 @@ func (f NameArgsFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 
 	return argVal
 }
+
+type CaseFunction struct{}
+func (f CaseFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	if (ToBool(i.Next())) {
+		v := make([]interface{}, 2)
+		v[0] = true
+		v[1] = i.Next()
+		return v
+	} else {
+		v := make([]interface{}, 2)
+		v[0] = false
+		v[1] = nil
+		return v
+	}
+}
+
+type DefaultCaseFunction struct{}
+func (f DefaultCaseFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	if (i.HasNext()) {
+		v := make([]interface{}, 2)
+		v[0] = true
+		v[1] = i.Next()
+		return v
+	} else {
+		v := make([]interface{}, 2)
+		v[0] = true
+		v[1] = true
+		return v
+	}
+}
+
+type CaseListFunction struct{}
+func (f CaseListFunction) Apply(i iterator.Iterator, c *Context) interface{} {
+	for (i.HasNext()) {
+		o := i.Next()
+		if (o != nil) {
+			itr := ToIterator(o)
+			if (itr == nil) {
+				if (ToBool(o)) {
+					return o
+				}
+			} else {
+				if (itr.HasNext()) {
+					if (ToBool(itr.Next())) {
+						if (itr.HasNext()) {
+							return itr.Next()
+						} else {
+							return true
+						}
+					}
+				}
+			}
+		}
+	}
+	return nil
+}
+
