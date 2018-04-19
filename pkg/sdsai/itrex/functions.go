@@ -451,3 +451,36 @@ func (f CaseListFunction) Apply(i iterator.Iterator, c *Context) interface{} {
 	return nil
 }
 
+// dict.mk
+// dict.put
+// dict.get
+// callFlattened
+// compose
+// curry
+// foldLeft
+// pipeline
+// map
+// mapFlat
+// head
+// tail
+// list
+// listFlatten
+// flatten
+// flatten2
+// string.join
+// string.split
+// string.concat
+// for
+// range
+// t
+// f
+// for
+// and
+// not
+// or
+// eq
+// lt
+// lte
+// gte
+// gt
+// version
