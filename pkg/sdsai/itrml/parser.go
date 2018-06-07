@@ -26,7 +26,7 @@ var quoted_string_re = regexp.MustCompile("^\"((?:\\\\\\\\|\\\\\"|[^\"])*)\"")
 
 var integer_re = regexp.MustCompile("^(?:-?\\d+)")
 var long_re = regexp.MustCompile("^(?:-?\\d+)[lL]")
-var double_re = regexp.MustCompile("^(?:-?\\d+\\.\\d+[dD]?|\\d+[dD])")
+var double_re = regexp.MustCompile("^(?:-?\\d+\\.\\d+[dD]?|-?\\d+[dD])")
 var word_re = regexp.MustCompile("^(?:[\\w\\.\\-:|]+)")
 
 type Parser struct {
